@@ -8,7 +8,7 @@ if __name__ == '__main__':
 	density = constants.INITIAL_ZERO_DENSITY
 	temperature = constants.INITIAL_TEMPERATURE  # currently constant. can be changed
 	matrix = initialize.initialize_matrix(N, density)
-
+	J = constants.CONSTANT_J
 	for i in range(constants.NUMBER_OF_STEPS):
 		matrix = dynamics.kawasaki_time_step(matrix,
 											 temperature)  # bad practice copying the matrix every time. can be changed.

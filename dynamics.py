@@ -34,27 +34,28 @@ def kawasaki_time_step(matrix, J, temperature):
 
 		#calculate E, swap and calculate E'
 		E = calculate_energy(matrix, J)
-		swap_matrix = np.copy(matrix)
-		swap_matrix[i, j], swap_matrix[neighbor_i, neighbor_j] = swap_matrix[neighbor_i, neighbor_j], swap_matrix[
+		matrix[i, j], matrix[neighbor_i, neighbor_j] = matrix[neighbor_i, neighbor_j], matrix[
 			i, j]
-		E_prime = calculate_energy(swap_matrix, J)
+		E_prime = calculate_energy(matrix, J)
 
 		delta_E = E_prime - E
 		#might need to change probability calculation
 		if delta_E < 0:
-			matrix = swap_matrix
+			# matrix = swap_matrix
 			break
 		else:
 			probability = np.exp(-delta_E / temperature)
 			if np.random.rand() < probability:
-				matrix = swap_matrix
+				# matrix = swap_matrix
 				break
+			matrix[i, j], matrix[neighbor_i, neighbor_j] = matrix[neighbor_i, neighbor_j], matrix[
+				i, j]
 			continue
 	return matrix
 
 
 def get_site_and_neighbor(N):
-	i, j = np.random.randint(0, N, 2)
+	i, j = np.random.randint(0, N, 2) #todo: change to choice for ==1
 	neighbor = constants.NEIGHBOR[
 		np.random.randint(0, 4)]  # problem with probability of picking an edge - where do you account for that?
 	neighbor_i = (i + neighbor[0]) % N  # currently we do periodic edges
@@ -71,7 +72,7 @@ def increment_density():
 
 
 
-@jit
+@jit()
 def calculate_energy(matrix, J):
 	"""
 	calculate the energy of the system

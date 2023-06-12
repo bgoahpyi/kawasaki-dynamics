@@ -1,5 +1,6 @@
 import numpy as np
 import constants
+from numba import jit
 
 def kawasaki_time_step(matrix, J, temperature):
 	"""
@@ -19,14 +20,18 @@ def kawasaki_time_step(matrix, J, temperature):
 	:return: updated matrix
 	"""
 	N = matrix.shape[0]
+	time = 0
 	while True:  # continue until a step is made
-		i, j = np.random.randint(0, N, 2)
-		neighbor = constants.NEIGHBOR[
-			np.random.randint(0, 4)]  # problem with probability of picking an edge - where do you account for that?
-		neighbor_i = (i + neighbor[0]) % N  # currently we do periodic edges
-		neighbor_j = (j + neighbor[1]) % N
+		#timeout logic for not finding any swap
+		time += 1
+		if time >= constants.TIMEOUT:
+			print("timeout")
+			return matrix
+
+		i, j, neighbor_i, neighbor_j = get_site_and_neighbor(N)
 		if (matrix[i, j] == matrix[neighbor_i, neighbor_j]):
 			continue
+
 		#calculate E, swap and calculate E'
 		E = calculate_energy(matrix, J)
 		swap_matrix = np.copy(matrix)
@@ -34,14 +39,29 @@ def kawasaki_time_step(matrix, J, temperature):
 			i, j]
 		E_prime = calculate_energy(swap_matrix, J)
 
+		delta_E = E_prime - E
 		#might need to change probability calculation
-		p = np.exp(-E/temperature)
-		p_prime = np.exp(-E_prime/temperature)
-		if np.random.rand() < p_prime/(p+p_prime):
+		if delta_E < 0:
 			matrix = swap_matrix
 			break
-		continue
+		else:
+			probability = np.exp(-delta_E / temperature)
+			if np.random.rand() < probability:
+				matrix = swap_matrix
+				break
+			continue
 	return matrix
+
+
+def get_site_and_neighbor(N):
+	i, j = np.random.randint(0, N, 2)
+	neighbor = constants.NEIGHBOR[
+		np.random.randint(0, 4)]  # problem with probability of picking an edge - where do you account for that?
+	neighbor_i = (i + neighbor[0]) % N  # currently we do periodic edges
+	neighbor_j = (j + neighbor[1]) % N
+	return i, j, neighbor_i, neighbor_j
+
+
 def increment_density():
 	"""
 	how to update the density? pick a 0 site at random and flip it to 1?
@@ -51,7 +71,7 @@ def increment_density():
 
 
 
-
+@jit
 def calculate_energy(matrix, J):
 	"""
 	calculate the energy of the system

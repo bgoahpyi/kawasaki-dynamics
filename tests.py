@@ -12,7 +12,7 @@ def initial_density_check():
 	# print(initial_state)
 	# print(initial_state.shape)
 	# print(initial_state.size)
-	print(np.count_nonzero(initial_state==0))
+	# print(np.count_nonzero(initial_state==0))
 	assert abs((np.count_nonzero(initial_state==0) / initial_state.size) - density) < 0.05
 
 

@@ -101,7 +101,7 @@ def swap_points(matrix,point_A,point_B):
 def calc_energy_point(matrix,J,point):
 	i,j = point
 	N = matrix.shape[0]
-	return matrix[i, j] * (
+	return -matrix[i, j] * (
 					matrix[(i + 1) % N, j] * J[constants.VERTICAL, i, j]
 					+ matrix[(i - 1) % N, j] * J[constants.VERTICAL, (i - 1) % N, j]
 					+ matrix[i, (j + 1) % N] * J[constants.HORIZONTAL, i, j]
@@ -118,7 +118,7 @@ def calculate_energy(matrix, J):
 	N = matrix.shape[0]
 	for i in range(N):
 		for j in range(N):
-			energy += matrix[i, j] * (
+			energy -= matrix[i, j] * (
 					matrix[(i + 1) % N, j] * J[constants.VERTICAL, i, j]
 					+ matrix[(i - 1) % N, j] * J[constants.VERTICAL, (i - 1) % N, j]
 					+ matrix[i, (j + 1) % N] * J[constants.HORIZONTAL, i, j]

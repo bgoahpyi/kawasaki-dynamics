@@ -87,6 +87,7 @@ def calculate_energy_diff(matrix,J,point_A,point_B):
 	before = calc_energy_point(matrix,J,point_A) + calc_energy_point(matrix,J,point_B)
 	matrix = swap_points(matrix,point_A,point_B)
 	after = calc_energy_point(matrix,J,point_A) + calc_energy_point(matrix,J,point_B)
+	matrix = swap_points(matrix,point_A,point_B) #needed!!!
 	return after - before
 
 @jit()

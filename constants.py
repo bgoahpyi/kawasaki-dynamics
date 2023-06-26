@@ -4,10 +4,10 @@ import numpy as np
 
 MATRIX_SIZE = 64
 INITIAL_ZERO_DENSITY = 0.5
-NUMBER_OF_STEPS = int(1e4)
+NUMBER_OF_STEPS = int(1e5)
 NUMBER_OF_FRAMES = 100
 
-INITIAL_TEMPERATURE = 0.1 #how do we know what is the right temperature?
+INITIAL_TEMPERATURE = 0.5 #how do we know what is the right temperature?
 TIMEOUT = 1e4
 CONSTANT_J = -np.ones((2, MATRIX_SIZE, MATRIX_SIZE))
 

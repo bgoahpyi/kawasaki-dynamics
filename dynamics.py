@@ -72,7 +72,6 @@ def get_site_and_neighbor(N, matrix):
     neighbor_j = (j + neighbor[1]) % N
     return i, j, neighbor_i, neighbor_j
 
-
 def increment_density(matrix, higher_density):
     """
     how to update the density? pick a 0 site at random and flip it to 1?

@@ -1,3 +1,4 @@
+import dynamics
 import main
 import constants
 import initialize
@@ -22,7 +23,7 @@ def time_benchmark():
 	check that the time for the simulation is reasonable
 	"""
 	print("starting time benchmark")
-	print("matrix size is", constants.MATRIX_SIZE)
+	print("cluster_matrix size is", constants.MATRIX_SIZE)
 	print("number of steps is", constants.NUMBER_OF_STEPS)
 	start = time.time()
 	main.main()
@@ -43,9 +44,17 @@ def zero_density_check():
 		 J=constants.CONSTANT_J, steps=constants.NUMBER_OF_STEPS)
 	assert np.count_nonzero(final_state==0) == 0
 
+
+def calculate_energy_test():
+	state=initialize.initialize_matrix(constants.MATRIX_SIZE, constants.INITIAL_ZERO_DENSITY)
+	assert dynamics.calculate_energy(
+		state, np.sum(initialize.create_neighbors_matrix(state), len(state.shape))
+	)==-constants.CONSTANT_J*np.sum(state*(np.roll(state, 1, axis=0)+np.roll(state, 1, axis=1)))
+
 if __name__ == '__main__':
 	# initial_density_check()
 	# zero_density_check()
 	time_benchmark()
+	calculate_energy_test()
 	# print("initial_density_check passed")
 

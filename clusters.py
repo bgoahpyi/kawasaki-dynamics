@@ -17,16 +17,7 @@ def clusters_from_original_matrix(matrix, cluster_value):
                 cluster_matrix= check_for_clusters_connection(cluster_matrix, i, j, max_cluster_label)
                 last_value_in_cluster=True
     return cluster_matrix
-            # elif cluster_matrix[i,j]==-1:
-            #     if not last_value_in_cluster:
-            #         if cluster_matrix[(i-1)%N_rows, j]!=0
-            #         cluster_matrix[i,j]=new_cluster_label
-            #
-            #     elif cluster_matrix[(i-1)%N_rows, j]!=0 and cluster_matrix[i, (j-1)%N_cols]!=0:
-            #         cluster_value=min((cluster_matrix[(i-1)%N_rows, j],cluster_matrix[i, (j-1)%N_cols]))
-            #
-            #         if cluster_matrix[(i-1)%N_rows, j]!=0:
-            #             cluster_matrix[i,j]=cluster_matrix[(i-1)%N_rows, j]
+
 
 
 def check_for_clusters_connection(matrix, row, col, new_cluster_label):
@@ -60,7 +51,7 @@ def check_for_clusters_connection(matrix, row, col, new_cluster_label):
     return matrix
 
 
-def get_cluster_number(matrix, cluster_value, min_cluster_size):
+def get_clusters_number(matrix, cluster_value, min_cluster_size):
     cluster_matrix=clusters_from_original_matrix(matrix, cluster_value)
     values, sizes=np.unique(cluster_matrix, return_counts=True)
     clusters_num=len(values[sizes>=min_cluster_size])-1
